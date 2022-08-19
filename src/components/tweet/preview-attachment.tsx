@@ -47,30 +47,29 @@ const TweetAttachmentSummary: React.FC<AttachmentKindProps> = ({ preview }) => {
 	const description = preview?.description?.replace(/\n/, " ") || "No description available.";
 
 	return (
-		<Link href={preview.url}>
-			<a className="flex gap-4 overflow-hidden rounded bg-gray-100 shadow-md">
-				<div className="flex h-28 w-28 shrink-0 items-center justify-center bg-black/5">
-					{preview.image?.url ? (
-						<div
-							className="h-28 w-28 bg-cover bg-center"
-							style={{ backgroundImage: `url(${preview.image?.url})` }}
-						/>
-					) : (
-						<BookOpenIcon className="w-16 text-gray-500" />
-					)}
-				</div>
+		<div className="relative flex gap-4 overflow-hidden rounded bg-gray-100 shadow-md">
+			<div className="flex h-28 w-28 shrink-0 items-center justify-center bg-black/5">
+				{preview.image?.url ? (
+					<div
+						className="h-28 w-28 bg-cover bg-center"
+						style={{ backgroundImage: `url(${preview.image?.url})` }}
+					/>
+				) : (
+					<BookOpenIcon className="w-16 text-gray-500" />
+				)}
+			</div>
 
-				<div className="my-2 flex flex-col justify-center">
-					<AttachmentPrettyUrl className="text-gray-700" url={preview.url} />
-					<LimitedUserTextBlock className="font-medium">
-						{preview?.title ?? ""}
-					</LimitedUserTextBlock>
-					<LimitedUserTextBlock className="mr-8 text-sm text-gray-800">
-						{description?.length > 96 ? `${description.slice(0, 96)}...` : description}
-					</LimitedUserTextBlock>
-				</div>
-			</a>
-		</Link>
+			<div className="my-2 flex flex-col justify-center">
+				<AttachmentPrettyUrl
+					className="text-gray-700 before:absolute before:inset-0"
+					url={preview.url}
+				/>
+				<LimitedUserTextBlock className="font-medium">{preview?.title ?? ""}</LimitedUserTextBlock>
+				<LimitedUserTextBlock className="mr-8 text-sm text-gray-800">
+					{description?.length > 96 ? `${description.slice(0, 96)}...` : description}
+				</LimitedUserTextBlock>
+			</div>
+		</div>
 	);
 };
 
@@ -80,7 +79,7 @@ const TweetAttachmentDetailedVideo: React.FC<AttachmentKindProps> = ({ preview }
 	const [visible, setVisible] = useState(false);
 
 	return (
-		<a className="relative flex w-full flex-col gap-2 overflow-hidden rounded bg-gray-100 shadow-md">
+		<div className="relative flex w-full flex-col gap-2 overflow-hidden rounded bg-gray-100 shadow-md">
 			{visible ? (
 				<iframe
 					className="w-full"
@@ -124,7 +123,7 @@ const TweetAttachmentDetailedVideo: React.FC<AttachmentKindProps> = ({ preview }
 					</div>
 				</div>
 			)}
-		</a>
+		</div>
 	);
 };
 
@@ -136,26 +135,27 @@ const TweetAttachmentDetailed: React.FC<AttachmentKindProps> = ({ preview }) => 
 	return video ? (
 		<TweetAttachmentDetailedVideo preview={preview} />
 	) : (
-		<Link href={preview.url}>
-			<a className="flex flex-col gap-4 overflow-hidden rounded bg-gray-100 shadow-md">
-				{image?.url && (
-					<Image
-						className="w-full"
-						height={image.height ?? 512}
-						src={image.url}
-						style={{ aspectRatio: `${image.width}/${image.height}` }}
-						width={image.width ?? 1024}
-					/>
-				)}
-				<div className="mx-4 mb-4 flex flex-col justify-center">
-					<AttachmentPrettyUrl className="text-gray-700" url={preview.url} />
-					<LimitedUserTextBlock className="font-medium">{preview.title ?? ""}</LimitedUserTextBlock>
-					<LimitedUserTextBlock className="mr-8 text-sm text-gray-800">
-						{description?.length > 96 ? `${(description ?? "").slice(0, 96)}...` : description}
-					</LimitedUserTextBlock>
-				</div>
-			</a>
-		</Link>
+		<div className="relative flex flex-col gap-4 overflow-hidden rounded bg-gray-100 shadow-md">
+			{image?.url && (
+				<Image
+					className="w-full"
+					height={image.height ?? 512}
+					src={image.url}
+					style={{ aspectRatio: `${image.width}/${image.height}` }}
+					width={image.width ?? 1024}
+				/>
+			)}
+			<div className="mx-4 mb-4 flex flex-col justify-center">
+				<AttachmentPrettyUrl
+					className="text-gray-700 before:absolute before:inset-0"
+					url={preview.url}
+				/>
+				<LimitedUserTextBlock className="font-medium">{preview.title ?? ""}</LimitedUserTextBlock>
+				<LimitedUserTextBlock className="mr-8 text-sm text-gray-800">
+					{description?.length > 96 ? `${(description ?? "").slice(0, 96)}...` : description}
+				</LimitedUserTextBlock>
+			</div>
+		</div>
 	);
 };
 
