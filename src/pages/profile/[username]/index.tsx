@@ -113,26 +113,8 @@ const NavigationItem: React.FC<NavigationItemProps> = ({ Icon, name }) => {
 };
 
 const Navigation: React.FC = () => {
-	const elementRef = useRef<HTMLDivElement>(null);
-	const [sticky, setSticky] = useState(false);
-
-	useEffect(() => {
-		const onScroll = () => {
-			requestAnimationFrame(() => {
-				if (!elementRef.current) return;
-				setSticky(elementRef.current.getBoundingClientRect().top <= 0);
-			});
-		};
-
-		document.addEventListener("scroll", onScroll);
-		return () => document.removeEventListener("scroll", onScroll);
-	}, []);
-
 	return (
-		<div
-			className={twMerge("flex h-screen flex-col gap-2 py-8 w-full", sticky && "sticky top-0")}
-			ref={elementRef}
-		>
+		<div className="sticky top-0 flex h-screen w-full flex-col gap-2 py-8">
 			<NavigationItem Icon={HomeIcon} name="Home" />
 			<NavigationItem Icon={HashtagIcon} name="Explore" />
 			<NavigationItem Icon={BellIcon} name="Notifications" />
