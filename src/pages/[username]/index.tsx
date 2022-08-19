@@ -8,13 +8,11 @@ import {
 	InboxIcon,
 	UserIcon
 } from "@heroicons/react/outline";
-import { useEffect, useRef, useState } from "react";
-import { twMerge } from "tailwind-merge";
 
-import { Profile } from "../../../utils/api";
-import { TweetPreview, TweetPreviewProps } from "../../../components/tweet/preview";
-import { UserTextBlock } from "../../../components/user-text-block";
-import { formatNumber } from "../../../utils/format-number";
+import { Profile } from "../../utils/api";
+import { TweetPreview, TweetPreviewProps } from "../../components/tweet/preview";
+import { UserTextBlock } from "../../components/user-text-block";
+import { formatNumber } from "../../utils/format-number";
 
 export const getStaticPaths: GetStaticPaths = () => {
 	return { paths: [], fallback: true };
@@ -33,9 +31,9 @@ export const getStaticProps: GetStaticProps<{ username: string }, { username: st
 	};
 };
 
-const WhatsHappeningPreviewItem: React.FC<{}> = () => {
+const WhatsHappeningPreviewItem: React.FC = () => {
 	return (
-		<Link href="#">
+		<Link href="/">
 			<a className="flex gap-4 rounded bg-gray-100 p-4 shadow hover:bg-white">
 				<div className="flex flex-col">
 					<div className="flex gap-2 text-sm text-gray-600">
@@ -103,7 +101,7 @@ export interface NavigationItemProps {
 
 const NavigationItem: React.FC<NavigationItemProps> = ({ Icon, name }) => {
 	return (
-		<Link passHref href="#">
+		<Link passHref href="/">
 			<a className="flex items-center gap-4 rounded p-2 hover:bg-gray-100 hover:shadow">
 				<Icon className="w-8 shrink-0 lg:w-10" />
 				<span className="text-xl lg:text-2xl">{name}</span>
@@ -175,7 +173,6 @@ Just sat here lurking, loving it.`,
 	return (
 		<div className="flex flex-col items-center justify-center bg-gray-200">
 			<div className="flex w-full max-w-screen-2xl flex-col">
-				<div className="flex px-16">a</div>
 				<div className="flex flex-col">
 					<div
 						className="aspect-[4/1] h-full w-full from-[rgba(0,0,0,0.65)] via-[rgba(0,0,0,0.4)] to-transparent bg-cover bg-center"

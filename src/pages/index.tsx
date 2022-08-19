@@ -1,7 +1,8 @@
 import { NextPage } from "next";
 
 const RootIndexPage: NextPage = function () {
-	return <div className="bg-black w-5 h-5"></div>
-}
+	return <div className="h-5 w-5 bg-black" />;
+};
 
 export default RootIndexPage;
+

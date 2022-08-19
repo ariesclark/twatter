@@ -2,12 +2,6 @@
 const nextConfig = {
 	reactStrictMode: true,
 	swcMinify: true,
-	rewrites: async () => [
-		{
-			source: "/:path*",
-			destination: "/profile/:path*"
-		}
-	],
 	experimental: {
 		images: {
 			allowFutureImage: true,
