@@ -1,8 +1,16 @@
 import { NextPage } from "next";
 
+import { Layout } from "~/components/layout";
+import { withSessionProps } from "~/utils/with-session-props";
+
+export const getServerSideProps = withSessionProps({}, async () => {
+	return {
+		props: {}
+	};
+});
+
 const RootIndexPage: NextPage = function () {
-	return <div className="h-5 w-5 bg-black" />;
+	return <Layout />;
 };
 
 export default RootIndexPage;
-

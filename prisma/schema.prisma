@@ -1,0 +1,109 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://postgres:iA+D3hjP@35.224.98.68:5432/twatter"
+}
+
+model Session {
+  id    String @id @default(cuid())
+  token String @unique
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id              String    @id @default(cuid())
+  username        String    @unique
+  password        String
+  email           String    @unique
+  emailVerifiedAt DateTime?
+  createdAt       DateTime  @default(now())
+
+  profileId String  @unique
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  followers User[]           @relation(name: "UserFollowers")
+  following User[]           @relation(name: "UserFollowers")
+  likes     PostEntityList[] @relation(name: "LikedPosts")
+  mentions  PostEntityList[]
+  posts     Post[]
+  sessions  Session[]
+}
+
+model Profile {
+  id            String    @id @default(cuid())
+  displayName   String
+  description   String    @default("")
+  avatar        String?
+  banner        String?
+  url           String?
+  urlVerifiedAt DateTime?
+  location      String?
+  bornAt        DateTime
+
+  privacyId String         @unique
+  privacy   ProfilePrivacy @relation(fields: [privacyId], references: [id])
+
+  user User?
+}
+
+enum PrivacyLevel {
+  public
+  protected
+  private
+}
+
+model ProfilePrivacy {
+  id            String       @id @default(cuid())
+  overall       PrivacyLevel @default(public)
+  location      PrivacyLevel @default(public)
+  locationState PrivacyLevel @default(public)
+  bornAt        PrivacyLevel @default(public)
+  bornAtYear    PrivacyLevel @default(public)
+
+  profile Profile?
+}
+
+model Post {
+  id        String       @id @default(cuid())
+  message   String
+  privacy   PrivacyLevel @default(public)
+  updatedAt DateTime     @updatedAt
+  createdAt DateTime     @default(now())
+
+  authorId   String
+  author     User           @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  entitiesId String         @unique
+  entities   PostEntityList @relation(fields: [entitiesId], references: [id], onDelete: Cascade)
+  parentId   String?
+  parent     Post?          @relation(name: "PostHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
+
+  attachments PostAttachment[]
+  children    Post[]           @relation(name: "PostHierarchy")
+}
+
+enum PostAttachmentType {
+  image
+  video
+}
+
+model PostAttachment {
+  id   String             @id @default(cuid())
+  type PostAttachmentType
+
+  postId String
+  post   Post   @relation(fields: [postId], references: [id])
+}
+
+model PostEntityList {
+  id String @id @default(cuid())
+
+  post     Post?
+  mentions User[]
+  links    String[]
+  likes    User[]   @relation(name: "LikedPosts")
+}

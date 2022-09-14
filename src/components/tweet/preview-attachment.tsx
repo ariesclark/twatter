@@ -1,12 +1,12 @@
-import { BookOpenIcon, ExternalLinkIcon } from "@heroicons/react/outline";
+import { BookOpenIcon, ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import React, { useState } from "react";
 import { twMerge } from "tailwind-merge";
 import Image from "next/future/image";
 
-import { useLinkPreview } from "../../hooks/useLinkPreview";
-import { LinkPreview, LinkPreviewKind } from "../../pages/api/link-preview";
-import { LimitedUserTextBlock } from "../user-text-block";
+import { useLinkPreview } from "~/hooks/use-link-preview";
+import { LinkPreview, LinkPreviewKind } from "~/pages/api/link-preview";
+import { LimitedContent } from "~/utils/content/react";
 
 export type AttachmentKind = "external" | "image" | "video";
 
@@ -64,10 +64,11 @@ const TweetAttachmentSummary: React.FC<AttachmentKindProps> = ({ preview }) => {
 					className="text-gray-700 before:absolute before:inset-0"
 					url={preview.url}
 				/>
-				<LimitedUserTextBlock className="font-medium">{preview?.title ?? ""}</LimitedUserTextBlock>
-				<LimitedUserTextBlock className="mr-8 text-sm text-gray-800">
-					{description?.length > 96 ? `${description.slice(0, 96)}...` : description}
-				</LimitedUserTextBlock>
+				<LimitedContent className="font-medium" value={preview?.title ?? ""} />
+				<LimitedContent
+					className="mr-8 text-sm text-gray-800"
+					value={description?.length > 96 ? `${description.slice(0, 96)}...` : description}
+				/>
 			</div>
 		</div>
 	);
@@ -116,7 +117,7 @@ const TweetAttachmentDetailedVideo: React.FC<AttachmentKindProps> = ({ preview }
 							</div>
 							<Link href={preview.url}>
 								<a className="pointer-events-auto">
-									<ExternalLinkIcon className="w-6" />
+									<ArrowTopRightOnSquareIcon className="w-6" />
 								</a>
 							</Link>
 						</div>
@@ -150,10 +151,11 @@ const TweetAttachmentDetailed: React.FC<AttachmentKindProps> = ({ preview }) => 
 					className="text-gray-700 before:absolute before:inset-0"
 					url={preview.url}
 				/>
-				<LimitedUserTextBlock className="font-medium">{preview.title ?? ""}</LimitedUserTextBlock>
-				<LimitedUserTextBlock className="mr-8 text-sm text-gray-800">
-					{description?.length > 96 ? `${(description ?? "").slice(0, 96)}...` : description}
-				</LimitedUserTextBlock>
+				<LimitedContent className="font-medium" value={preview.title ?? ""} />
+				<LimitedContent
+					className="mr-8 text-sm text-gray-800"
+					value={description?.length > 96 ? `${(description ?? "").slice(0, 96)}...` : description}
+				/>
 			</div>
 		</div>
 	);

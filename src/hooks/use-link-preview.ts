@@ -1,6 +1,6 @@
 import useSWR from "swr";
 
-import type { LinkPreview } from "../pages/api/link-preview";
+import { LinkPreview } from "~/pages/api/link-preview";
 
 export function useLinkPreview(url: string) {
 	return useSWR<LinkPreview>(["link-preview", url], async () => {

@@ -1,5 +1,7 @@
 import { parse as parseHtml } from "node-html-parser";
 
+import { RequestError } from "~/utils/request-error";
+
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export type LinkPreviewKind = "summary" | "detailed";
@@ -30,7 +32,7 @@ export async function getLinkPreview(url: URL): Promise<LinkPreview> {
 		}
 	});
 
-	if (!response.ok) throw new Error("Request failed");
+	if (!response.ok) throw new RequestError("Request failed", { statusCode: 400 });
 
 	// We've followed redirects, what is the actual url?
 	url = new URL(response.url);
@@ -106,8 +108,7 @@ export async function getLinkPreview(url: URL): Promise<LinkPreview> {
 		title,
 		description,
 		image,
-		video,
-		tags
+		video
 	};
 }
 
@@ -116,7 +117,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
 		const preview = await getLinkPreview(new URL(req.query.url as string));
 		res.status(200).json(preview);
 	} catch (reason) {
-		console.error(reason)
+		console.error(reason);
 		res.status(400).json({ error: reason });
 	}
 }
